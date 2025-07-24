@@ -14,6 +14,7 @@ const Index = () => {
   const { toast } = useToast();
   const [darkMode, setDarkMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [displayedText, setDisplayedText] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -52,6 +53,34 @@ const Index = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+  const aboutText = `With over 5 years of experience at the dynamic intersection of education, technology, and innovation, I am a versatile Instructional Designer and Full Stack Software Developer. My unique ability lies in bridging complex learning needs with scalable technological solutions, crafting impactful digital experiences that drive both user engagement and organizational growth.
+
+As an Instructional Designer, I specialize in end-to-end curriculum development using the ADDIE model, creating learner-centric solutions, managing robust LMS platforms like Moodle and Canvas, and ensuring comprehensive accessibility (WCAG, SCORM). Concurrently, as a Full Stack Developer, I build cutting-edge web applications and scalable REST APIs with Django, React, Node.js, and Java, focusing on performance optimization and robust system architecture. I've successfully deployed infrastructure on AWS, enhancing uptime and reducing costs.
+
+My mission is to leverage this blended expertise to solve real-world challenges, enhance learning outcomes, and build durable, intuitive digital products.`;
+
+  let currentIndex = 0;
+  const typingSpeed = 10; // milliseconds per character
+
+  const typeWriter = () => {
+    if (currentIndex < aboutText.length) {
+      setDisplayedText(aboutText.slice(0, currentIndex + 1));
+      currentIndex++;
+      setTimeout(typeWriter, typingSpeed);
+    }
+  };
+
+  // Start typing animation after a delay
+  const startDelay = setTimeout(() => {
+    typeWriter();
+  }, 1000);
+
+  return () => {
+    clearTimeout(startDelay);
+  };
+}, []);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -264,9 +293,9 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            <p className="text-lg text-gray-300 dark:text-gray-200 mb-12 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.8s' }}>
+            {/* <p className="text-lg text-gray-300 dark:text-gray-200 mb-12 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.8s' }}>
               Bridging the gap between education and technology to create impactful learning experiences and innovative software solutions.
-            </p>
+            </p> */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: '1s' }}>
               <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 hover:scale-105 transition-all duration-300 transform">
                 <Mail className="mr-2 h-5 w-5" />
@@ -287,8 +316,9 @@ const Index = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-white animate-fade-in">About Me</h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              A unique blend of instructional design expertise and software development skills
-            </p>
+  {displayedText}
+  <span className="animate-pulse">|</span>
+</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
